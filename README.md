@@ -1,4 +1,4 @@
-## Use Chiaki and Photorealistic PS4 Games to Build and Test Machine Learning Models
+## Use Chiaki and Photorealistic PS4 Games to Train and Test Machine Learning Models
 
 This branch enables Chiaki to forward video stream received from PS4 to another Application using ZeroMQ.
 
