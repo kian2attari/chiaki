@@ -94,7 +94,7 @@ endif()
 target_link_libraries(chiaki opencv_core)
 target_link_libraries(chiaki opencv_highgui)
 target_link_libraries(chiaki zmq)
-target_link_libraries(chiaki FFMPEG::swscale)
+
 #
 
 set_target_properties(chiaki PROPERTIES
