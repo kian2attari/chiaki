@@ -31,6 +31,9 @@ class SettingsDialog : public QDialog
 
 		QListWidget *registered_hosts_list_widget;
 		QPushButton *delete_registered_host_button;
+                
+        QLineEdit *dispatch_server_addr_edit;
+        QCheckBox *dispatch_server_check_box;
 
 		void UpdateBitratePlaceholder();
 
@@ -50,6 +53,10 @@ class SettingsDialog : public QDialog
 		void UpdateRegisteredHostsButtons();
 		void RegisterNewHost();
 		void DeleteRegisteredHost();
+        
+        void DispatchServerStateChanged();
+        void DispatchServerAddrChanged();
+        
 
 	public:
 		SettingsDialog(Settings *settings, QWidget *parent = nullptr);
