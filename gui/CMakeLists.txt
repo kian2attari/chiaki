@@ -20,7 +20,7 @@ if(WIN32)
 	add_definitions(-DWIN32_LEAN_AND_MEAN)
 endif()
 
-find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil)
+find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil swscale)
 
 set(RESOURCE_FILES "")
 
@@ -95,6 +95,7 @@ endif()
 #
 # Necessary libraries such as OpenCV and ZMQ
 #
+add_library(FFMPEG::swscale ALIAS swscale)
 target_link_libraries(chiaki opencv_core)
 target_link_libraries(chiaki opencv_highgui)
 target_link_libraries(chiaki zmq)
