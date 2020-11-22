@@ -19,7 +19,7 @@ wget https://dl.bintray.com/zeromq/generic/libzmq-v141-x64-4_3_2.zip && 7z x lib
 cd .. || exit 1
 
 mkdir opencv && cd opencv || exit 1
-wget https://downloads.sourceforge.net/project/opencvlibrary/4.5.0/opencv-4.5.0-vc14_vc15.exe?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fopencvlibrary%2Ffiles%2Flatest%2Fdownload&ts=1606021392 && mv opencv-4.5.0-vc14_vc15.exe opencv.exe || exit 1
+wget https://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.4.3/opencv-3.4.3-vc14_vc15.exe && mv opencv-3.4.3-vc14_vc15.exe opencv.exe || exit 1
 cd .. || exit 1
 
 
