@@ -74,7 +74,7 @@ if(CHIAKI_ENABLE_CLI)
 	target_link_libraries(chiaki chiaki-cli-lib)
 endif()
 
-target_link_libraries(chiaki FFMPEG::avcodec FFMPEG::avutil FFMPEG::swscale
+target_link_libraries(chiaki FFMPEG::avcodec FFMPEG::avutil
 	${SWRESAMPLE}
 	${SWSCALE})
 target_link_libraries(chiaki Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Concurrent Qt5::Multimedia Qt5::OpenGL Qt5::Svg)
