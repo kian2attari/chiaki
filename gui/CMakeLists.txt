@@ -14,7 +14,7 @@ if(WIN32)
 	add_definitions(-DWIN32_LEAN_AND_MEAN)
 endif()
 
-find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil)
+find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil swscale)
 
 set(RESOURCE_FILES "")
 
