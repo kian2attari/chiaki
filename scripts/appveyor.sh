@@ -2,6 +2,9 @@
 
 echo "APPVEYOR_BUILD_FOLDER=$APPVEYOR_BUILD_FOLDER"
 
+cmake --version
+
+
 mkdir ninja && cd ninja || exit 1
 wget https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-win.zip && 7z x ninja-win.zip || exit 1
 cd .. || exit 1
@@ -10,7 +13,18 @@ mkdir yasm && cd yasm || exit 1
 wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe && mv yasm-1.3.0-win64.exe yasm.exe || exit 1
 cd .. || exit 1
 
-export PATH="$PWD/ninja:$PWD/yasm:/c/Qt/5.12/msvc2017_64/bin:$PATH"
+
+mkdir zmq && cd zmq || exit 1
+wget https://dl.bintray.com/zeromq/generic/libzmq-v141-x64-4_3_2.zip && 7z x libzmq-v141-x64-4_3_2.zip || exit 1
+cd .. || exit 1
+
+mkdir opencv && cd opencv || exit 1
+wget https://downloads.sourceforge.net/project/opencvlibrary/4.5.0/opencv-4.5.0-vc14_vc15.exe?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fopencvlibrary%2Ffiles%2Flatest%2Fdownload&ts=1606021392 && mv opencv-4.5.0-vc14_vc15.exe opencv.exe || exit 1
+cd .. || exit 1
+
+
+
+export PATH="$PWD/opencv:$PWD/zmq:$PWD/ninja:$PWD/yasm:/c/Qt/5.12/msvc2017_64/bin:$PATH"
 
 scripts/build-ffmpeg.sh --target-os=win64 --arch=x86_64 --toolchain=msvc || exit 1
 
@@ -47,6 +61,7 @@ QT_PATH="C:/Qt/5.12/msvc2017_64"
 
 COPY_DLLS="$PWD/openssl-1.1/x64/bin/libcrypto-1_1-x64.dll $PWD/openssl-1.1/x64/bin/libssl-1_1-x64.dll $SDL_ROOT/lib/x64/SDL2.dll"
 
+
 mkdir build && cd build || exit 1
 
 cmake \
@@ -58,6 +73,8 @@ cmake \
 	-DPYTHON_EXECUTABLE="$PYTHON" \
 	-DCHIAKI_ENABLE_TESTS=ON \
 	-DCHIAKI_ENABLE_CLI=OFF \
+	-DCHIAKI_ENABLE_SETSU=OFF \
+	-DCHIAKI_GUI_ENABLE_QT_GAMEPAD=OFF \
 	-DCHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER=ON \
 	.. || exit 1
 
