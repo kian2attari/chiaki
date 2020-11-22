@@ -2,9 +2,15 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Concurrent Multimedia OpenGL Svg)
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Multimedia OpenGL Svg)
 if(APPLE)
 	find_package(Qt5 REQUIRED COMPONENTS MacExtras)
+endif()
+if(CHIAKI_GUI_ENABLE_QT_GAMEPAD AND CHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER)
+	message(FATAL_ERROR "Only one input method may be enabled. Disable either CHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER or CHIAKI_GUI_ENABLE_QT_GAMEPAD.")
+endif()
+if(CHIAKI_GUI_ENABLE_QT_GAMEPAD)
+	find_package(Qt5 REQUIRED COMPONENTS Gamepad)
 endif()
 if(CHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER)
 	find_package(SDL2 MODULE REQUIRED)
@@ -15,7 +21,6 @@ if(WIN32)
 endif()
 
 find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil)
-
 
 set(RESOURCE_FILES "")
 
@@ -55,8 +60,6 @@ add_executable(chiaki WIN32
 		src/registdialog.cpp
 		include/host.h
 		src/host.cpp
-		include/settingskeycapturedialog.h
-		src/settingskeycapturedialog.cpp
 		include/settingsdialog.h
 		src/settingsdialog.cpp
 		include/manualhostdialog.h
@@ -74,21 +77,19 @@ if(CHIAKI_ENABLE_CLI)
 	target_link_libraries(chiaki chiaki-cli-lib)
 endif()
 
-target_link_libraries(chiaki FFMPEG::avcodec FFMPEG::avutil
-	${SWRESAMPLE}
-	${SWSCALE})
-target_link_libraries(chiaki Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Concurrent Qt5::Multimedia Qt5::OpenGL Qt5::Svg)
+target_link_libraries(chiaki FFMPEG::avcodec FFMPEG::avutil)
+target_link_libraries(chiaki Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Multimedia Qt5::OpenGL Qt5::Svg)
 if(APPLE)
 	target_link_libraries(chiaki Qt5::MacExtras)
 	target_compile_definitions(chiaki PRIVATE CHIAKI_GUI_ENABLE_QT_MACEXTRAS)
 endif()
+if(CHIAKI_GUI_ENABLE_QT_GAMEPAD)
+	target_link_libraries(chiaki Qt5::Gamepad)
+	target_compile_definitions(chiaki PRIVATE CHIAKI_GUI_ENABLE_QT_GAMEPAD)
+endif()
 if(CHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER)
 	target_link_libraries(chiaki SDL2::SDL2)
 	target_compile_definitions(chiaki PRIVATE CHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER)
-endif()
-if(CHIAKI_ENABLE_SETSU)
-	target_link_libraries(chiaki setsu)
-	target_compile_definitions(chiaki PRIVATE CHIAKI_GUI_ENABLE_SETSU)
 endif()
 
 #
@@ -97,8 +98,7 @@ endif()
 target_link_libraries(chiaki opencv_core)
 target_link_libraries(chiaki opencv_highgui)
 target_link_libraries(chiaki zmq)
-
-
+target_link_libraries(chiaki FFMPEG::swscale)
 #
 
 set_target_properties(chiaki PROPERTIES
