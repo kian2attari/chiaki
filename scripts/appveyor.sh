@@ -22,7 +22,9 @@ mkdir opencv && cd opencv || exit 1
 wget https://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.4.3/opencv-3.4.3-vc14_vc15.exe && mv opencv-3.4.3-vc14_vc15.exe opencv.exe || exit 1
 cd .. || exit 1
 
-
+mkdir ffmpeg && cd ffmpeg || exit 6
+wget https://github.com/GyanD/codexffmpeg/releases/download/2020-11-18-git-e3081d6f4f/ffmpeg-2020-11-18-git-e3081d6f4f-full_build.zip && 7z x ffmpeg-2020-11-18-git-e3081d6f4f-full_build.zip || exit 1
+cd .. || exit 1
 
 export PATH="$PWD/opencv:$PWD/zmq:$PWD/ninja:$PWD/yasm:/c/Qt/5.12/msvc2017_64/bin:$PATH"
 
