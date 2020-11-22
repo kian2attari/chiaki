@@ -22,6 +22,9 @@ endif()
 
 find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil swscale)
 
+find_package( OpenCV REQUIRED opencv_core opencv_highgui )
+
+
 set(RESOURCE_FILES "")
 
 if(APPLE)
