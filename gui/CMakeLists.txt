@@ -14,9 +14,7 @@ if(WIN32)
 	add_definitions(-DWIN32_LEAN_AND_MEAN)
 endif()
 
-find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil swscale)
-find_library(SDL2 SDL2)
-find_library(SWRESAMPLE swresample)
+find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil)
 
 
 set(RESOURCE_FILES "")
@@ -99,6 +97,7 @@ endif()
 target_link_libraries(chiaki opencv_core)
 target_link_libraries(chiaki opencv_highgui)
 target_link_libraries(chiaki zmq)
+target_link_libraries(chiaki FFMPEG::swscale)
 
 #
 
