@@ -137,7 +137,7 @@ SettingsDialog::SettingsDialog(Settings *settings, QWidget *parent) : QDialog(pa
 	connect(fps_combo_box, SIGNAL(currentIndexChanged(int)), this, SLOT(FPSSelected()));
 	stream_settings_layout->addRow(tr("FPS:"), fps_combo_box);
 
-	bitrate_edit = new QLineEdit(this);
+	bitrate_edit = new QLineEdit(this); // TODO:: Memory leak?
 	bitrate_edit->setValidator(new QIntValidator(2000, 50000, bitrate_edit));
 	unsigned int bitrate = settings->GetBitrate();
 	bitrate_edit->setText(bitrate ? QString::number(bitrate) : "");
@@ -221,6 +221,24 @@ SettingsDialog::SettingsDialog(Settings *settings, QWidget *parent) : QDialog(pa
 	decode_settings_layout->addRow(tr("Hardware decode method:"), hardware_decode_combo_box);
 	UpdateHardwareDecodeEngineComboBox();
 
+    
+    // Dispatch Server Settings
+    
+	auto dispatch_server_settings_group_box = new QGroupBox(tr("Dispatch Server Settings"));
+	layout->addWidget(dispatch_server_settings_group_box);
+    auto dispatch_server_layout = new QFormLayout(); // 
+	dispatch_server_settings_group_box->setLayout(dispatch_server_layout);
+
+	dispatch_server_check_box = new QCheckBox(this); // TODO:: Memory leak? Will profile later.
+    dispatch_server_check_box->setCheckState(settings->GetDispatchServerState() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+    connect(dispatch_server_check_box, &QCheckBox::stateChanged, this, &SettingsDialog::DispatchServerStateChanged);
+	dispatch_server_layout->addRow(tr("Dispatch Server for Machine Learning Training"), dispatch_server_check_box);
+    
+    dispatch_server_addr_edit = new QLineEdit(this);
+    dispatch_server_addr_edit->setText(settings->GetDispatchServerAddr());
+    dispatch_server_layout->addRow(tr("Dispatch Server Address"), dispatch_server_addr_edit);
+    connect(dispatch_server_addr_edit, &QLineEdit::textEdited, this, &SettingsDialog::DispatchServerAddrChanged);
+    
 	// Registered Consoles
 
 	auto registered_hosts_group_box = new QGroupBox(tr("Registered Consoles"));
@@ -379,4 +397,14 @@ void SettingsDialog::DeleteRegisteredHost()
 		return;
 
 	settings->RemoveRegisteredHost(mac);
+}
+
+void SettingsDialog::DispatchServerAddrChanged()
+{
+    settings->SetDispatchServerAddr(dispatch_server_addr_edit->text());
+}
+
+void SettingsDialog::DispatchServerStateChanged()
+{
+    settings->SetDispatchServerState(dispatch_server_check_box->checkState());
 }
