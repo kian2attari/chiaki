@@ -16,6 +16,10 @@ endif()
 
 find_package(FFMPEG REQUIRED COMPONENTS avcodec avutil swscale)
 
+	FFMPEG::swscale
+	${SWRESAMPLE}
+	${SWSCALE})
+
 set(RESOURCE_FILES "")
 
 if(APPLE)
